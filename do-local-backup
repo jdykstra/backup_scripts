@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+
+# This runs as a cron job, so the user's shell environment and PATH are not set up.
+
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${SCRIPT_DIR}"/env.sh
+
+# We spell out individual options rather than using -a because we don't want to compare permissions.  Windows
+# and Linux permissions don't map well.
+#  The -W flag helps work around a WSL bug that causes rsync to hang.  https://github.com/microsoft/WSL/issues/2138
+#  This bug is still present in WSL 2 as of April 2025.
+PARAMS=(
+  -rltgoD 
+  --log-file="$LOGFILENAME" 
+  --modify-window=2 
+  --exclude-from=/home/remotebk/exclude_list 
+  -W
+)
+
+echo "IMGARCH" $(date +%T) 
+rsync "${PARAMS[@]}"	$IMGARCH 	$DEST/imgarchbk/ 
+
+echo "VIDARCH" $(date +%T) 
+rsync "${PARAMS[@]}"	$VIDARCH	$DEST/vidarchbk/ 
+
+echo "MISC" $(date +%T) 
+rsync "${PARAMS[@]}"    $MISC   	$DEST/miscbk/ 
+
+echo "CATALOG" $(date +%T) 
+rsync "${PARAMS[@]}"    $CATALOG    $DEST/catalogbk/ 
+
+echo "USERS" $(date +%T) 
+rsync" ${PARAMS[@]}"	    $USERS	    $DEST/userbk/ 
+
+echo "MUSIC" $(date +%T) 
+rsync "${PARAMS[@]}"	$MUSIC	    $DEST/musicbk/ 
+
+

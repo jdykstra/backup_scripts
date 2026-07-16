@@ -1,0 +1,37 @@
+$RECYCLE.BIN
+$Recycle.Bin
+.TemporaryItems
+.Trash*
+hiberfil.sys
+lost+found
+Network Trash Folder
+pagefile.sys
+Recycled
+RECYCLER
+System Volume Information
+Temporary Items
+found.*
+cache
+Temp
+LocalCache
+Cache
+Code Cache
+CacheStorage
+GrShaderCache
+OneDrive
+cache2
+TempState
+*Previews.lrdata*
+**__pycache__/
+**Mozilla/Firefox/
+**Microsoft/Office/
+**Microsoft/Teams/
+**AppData/Local/Google/Chrome/User Data/
+**AppData/Local/Packages/
+**.vscode/
+.roescache/
+BigTableGroupCache/
+Caches/
+CrashDumps/
+D3DSCache/
+

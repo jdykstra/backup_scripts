@@ -1,0 +1,55 @@
+#! /bin/bash
+set -e
+
+# This runs as a cron job, so the user's shell environment and PATH are not set up.
+
+# Uses AWS credentials from ~/.aws/config
+	
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+source "${SCRIPT_DIR}"/env.sh
+
+PARAMS="--no-progress"
+EXCLUDES='--exclude "*$RECYCLE.BIN*"  --exclude "*.Trash*" --exclude "RECYCLER"'
+echo "S3:  ARCHIVE"
+time aws s3 sync $PARAMS $EXCLUDES --no-follow-symlinks                                         \
+                    "$MISC"/Archived/    s3://jdykstra.archive/cumulative/archived/ 
+
+echo "S3:  SELECTS 2024"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks --delete "$IMGARCH/Selects 2024"      \
+                      s3://jdykstra.archive/cumulative/image_archive/"Selects 2024/"
+echo "S3:  MEMORIES 2024"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks --delete  "$IMGARCH/Memories 2024"    \
+                      s3://jdykstra.archive/cumulative/image_archive/"Memories 2024"
+echo "S3:  SELECTS 2025"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks --delete "$IMGARCH/Selects 2025"      \
+                      s3://jdykstra.archive/cumulative/image_archive/"Selects 2025/"
+echo "S3:  MEMORIES 2025"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks --delete  "$IMGARCH/Memories 2025"    \
+                      s3://jdykstra.archive/cumulative/image_archive/"Memories 2025"
+
+echo "S3:  SELECTS 2026"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks --delete "$IMGARCH/Selects 2026"      \
+                      s3://jdykstra.archive/cumulative/image_archive/"Selects 2026/"
+echo "S3:  MEMORIES 2026"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks --delete  "$IMGARCH/Memories 2026"    \
+                      s3://jdykstra.archive/cumulative/image_archive/"Memories 2026"
+
+echo "S3:  Scans Done By Me"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks           "$IMGARCH/Scans Done By Me"    \
+                      s3://jdykstra.archive/cumulative/image_archive/"Scans Done By Me"
+
+echo "S3:  OPTIMIZED"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks           "$IMGARCH/Optimized"        \
+                      s3://jdykstra.archive/cumulative/image_archive/"Optimized"   
+echo "S3:  IG POST ARCHIVE"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks           "$IMGARCH/Social Media/IG Post Archive"  \
+                      s3://jdykstra.archive/cumulative/image_archive/"Social Media/IG Post Archive"   
+echo "S3:  FLAC-MUSIC-LIBRARY"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks           "$MUSIC/flac-music-library"  \
+                      s3://jdykstra.archive/cumulative/music/"flac-music-library"
+echo "S3:  MP3-MUSIC-LIBRARY"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks           "$MUSIC/mp3-music-library"  \
+                      s3://jdykstra.archive/cumulative/music/"mp3-music-library"
+echo "S3:  TRIAL"
+time aws s3 sync  $PARAMS $EXCLUDES --no-follow-symlinks           "$MUSIC/trial"  \
+                      s3://jdykstra.archive/cumulative/music/"trial"

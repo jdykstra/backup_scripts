@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# This runs as a cron job, so the user's shell environment and PATH are not set up.
+
+~/do-local-backup >> "$LOGFILENAME" 2>&1
+
+~/do-cloud-backup >> "$LOGFILENAME" 2>&1
