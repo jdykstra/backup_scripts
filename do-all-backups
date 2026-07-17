@@ -11,3 +11,5 @@ source "${SCRIPT_DIR}"/env.sh
 "${SCRIPT_DIR}"/do-local-backup >> "$LOGFILENAME" 2>&1
 
 "${SCRIPT_DIR}"/do-cloud-backup >> "$LOGFILENAME" 2>&1
+
+echo "-------------------------------------------------------" >> "$LOGFILENAME"
