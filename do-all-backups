@@ -1,7 +1,15 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+
+echo ${SCRIPT_DIR}
+
 # This runs as a cron job, so the user's shell environment and PATH are not set up.
 
-~/do-local-backup >> "$LOGFILENAME" 2>&1
+source "${SCRIPT_DIR}"/env.sh
 
-~/do-cloud-backup >> "$LOGFILENAME" 2>&1
+"${SCRIPT_DIR}"/do-local-backup >> "$LOGFILENAME" 2>&1
+
+"${SCRIPT_DIR}"/do-cloud-backup >> "$LOGFILENAME" 2>&1
+
+echo "-------------------------------------------------------" >> "$LOGFILENAME"

@@ -11,29 +11,29 @@ source "${SCRIPT_DIR}"/env.sh
 #  The -W flag helps work around a WSL bug that causes rsync to hang.  https://github.com/microsoft/WSL/issues/2138
 #  This bug is still present in WSL 2 as of April 2025.
 PARAMS=(
-  -rltgoD 
-  --log-file="$LOGFILENAME" 
+  -rltgoDq
+  --log-file=/dev/stdout 
   --modify-window=2 
-  --exclude-from=/home/remotebk/exclude_list 
+  --exclude-from=${SCRIPT_DIR}/exclude_list 
   -W
 )
 
-echo "IMGARCH" $(date +%T) 
+echo "IMGARCH"
 rsync "${PARAMS[@]}"	$IMGARCH 	$DEST/imgarchbk/ 
 
-echo "VIDARCH" $(date +%T) 
+echo "VIDARCH"
 rsync "${PARAMS[@]}"	$VIDARCH	$DEST/vidarchbk/ 
 
-echo "MISC" $(date +%T) 
+echo "MISC"
 rsync "${PARAMS[@]}"    $MISC   	$DEST/miscbk/ 
 
-echo "CATALOG" $(date +%T) 
+echo "CATALOG"
 rsync "${PARAMS[@]}"    $CATALOG    $DEST/catalogbk/ 
 
-echo "USERS" $(date +%T) 
+echo "USERS"
 rsync" ${PARAMS[@]}"	    $USERS	    $DEST/userbk/ 
 
-echo "MUSIC" $(date +%T) 
+echo "MUSIC"
 rsync "${PARAMS[@]}"	$MUSIC	    $DEST/musicbk/ 
 
 
