@@ -9,13 +9,15 @@
     Register-ScheduledTask -TaskName "WSL_Mount_Music_Drive" -Action $Action -Trigger $Trigger -Principal $Principal
     ```
 
-1. Enable cron on WSL:
-    ```
-    sudo systemctl enable cron
-    ```
+1. Create a scheduled task that runs every 30 minutes to do the backup.  From a terminal with administrative privileges:
 
-1. Insert this line in /etc/crontab to start the backup every 30 minutes:
     ```
-    0-59/30 * * * * jwd /usr/bin/flock -n /var/lock/backup-script.lock -c /home/jwd/backup-scripts/do-all-backups
+    $LinuxUser = "jwd"
+    $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-WindowStyle Hidden -NoProfile -Command `"Start-Process wsl.exe -ArgumentList '-e', '/bin/bash', '-l', '-c', '/home/$LinuxUser/backup_scripts/do-all-backups' -WindowStyle Hidden -Wait`""
+    $Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 30)
+    $Principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -RunLevel Highest
+    $Settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew
+
+    Register-ScheduledTask -TaskName "WSL_Run_Backups" -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings -Force
     ```
 

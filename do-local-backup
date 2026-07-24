@@ -31,7 +31,7 @@ echo "CATALOG"
 rsync "${PARAMS[@]}"    $CATALOG    $DEST/catalogbk/ 
 
 echo "USERS"
-rsync" ${PARAMS[@]}"	    $USERS	    $DEST/userbk/ 
+rsync "${PARAMS[@]}"	    $USERS	    $DEST/userbk/ 
 
 echo "MUSIC"
 rsync "${PARAMS[@]}"	$MUSIC	    $DEST/musicbk/ 

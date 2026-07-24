@@ -8,6 +8,17 @@ echo ${SCRIPT_DIR}
 
 source "${SCRIPT_DIR}"/env.sh
 
+LOCKFILE="/var/lock/do-all-backups.lock"
+exec 200>"$LOCKFILE"
+
+# Try to acquire an exclusive lock without waiting (-n)
+if ! flock -n 200; then
+    echo "Another backup process is already running. Exiting."
+    exit 1
+fi
+
+# --- Your backup logic here ---
+
 "${SCRIPT_DIR}"/do-local-backup >> "$LOGFILENAME" 2>&1
 
 "${SCRIPT_DIR}"/do-cloud-backup >> "$LOGFILENAME" 2>&1
